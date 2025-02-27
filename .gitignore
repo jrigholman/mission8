@@ -1,0 +1,6 @@
+# Ignore build output and user-specific files
+bin/
+obj/
+.vs/
+*.cache
+*.csproj.user
