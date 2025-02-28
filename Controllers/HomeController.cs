@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using mission8.Models;
 using System.Linq;
 
@@ -15,8 +16,11 @@ namespace mission8.Controllers
 
         public IActionResult Index()
         {
-            var tasks = _repo.Tasks?.Where(t => !t.Completed).ToList() ?? new List<TaskAppModel>();
-            return View(tasks); 
+            var tasks = _repo.Tasks.Include(t => t.Category).ToList();
+            return View(tasks);
         }
+
+
+
     }
 }

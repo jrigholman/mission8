@@ -13,6 +13,24 @@ namespace mission8.Models
             _context = context;
         }
 
+        public IEnumerable<TaskAppModel> GetAllTasks()
+        {
+            return _context.Tasks.Include(t => t.Category).ToList();
+        }
+
+        public TaskAppModel GetTaskById(int id)
+        {
+            return _context.Tasks.FirstOrDefault(t => t.TaskId == id);
+        }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList(); // Ensure ToList() is used
+        }
+
+
+        
+
         public IQueryable<TaskAppModel> Tasks => _context.Tasks; // Ensure model consistency
 
         public void AddTask(TaskAppModel task)
