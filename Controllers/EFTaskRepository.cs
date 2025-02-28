@@ -1,25 +1,45 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using mission8.Models;
 
 namespace mission8.Models
 {
     public class EFTaskRepository : ITaskRepository
     {
-        private TaskDbContext _context;
+        private AppDbContext _context; // Fixed inconsistent DbContext name
 
-        public EFTaskRepository(TaskDbContext context)
+        public EFTaskRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public IQueryable<TaskModel> Tasks => _context.Tasks;
+        public IEnumerable<TaskAppModel> GetAllTasks()
+        {
+            return _context.Tasks.Include(t => t.Category).ToList();
+        }
 
-        public void AddTask(TaskModel task)
+        public TaskAppModel GetTaskById(int id)
+        {
+            return _context.Tasks.FirstOrDefault(t => t.TaskId == id);
+        }
+
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList(); // Ensure ToList() is used
+        }
+
+
+        
+
+        public IQueryable<TaskAppModel> Tasks => _context.Tasks; // Ensure model consistency
+
+        public void AddTask(TaskAppModel task)
         {
             _context.Tasks.Add(task);
             _context.SaveChanges();
         }
 
-        public void UpdateTask(TaskModel task)
+        public void UpdateTask(TaskAppModel task)
         {
             _context.Tasks.Update(task);
             _context.SaveChanges();

@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using mission8.Models; // Ensure this is present
+
 
 namespace mission8.Models
 {
@@ -7,40 +9,35 @@ namespace mission8.Models
     {
         [Key]
         public int TaskId { get; set; }
-        
-        [Required]
-        [StringLength(100)] // You can adjust the length as needed
-        public string TaskName { get; set; }
-        
-        public DateTime? DueDate { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Task name is required.")]
+        [StringLength(100)]
+        public string TaskName { get; set; } = string.Empty; 
+
+        public DateTime? DueDate { get; set; } 
+
+        [Required(ErrorMessage = "Please select a quadrant.")]
         [EnumDataType(typeof(QuadrantType))]
-        public QuadrantType Quadrant { get; set; } 
-        
-        [Required]
+        public QuadrantType Quadrant { get; set; }
+
+        
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        
+
+        public Category? Category { get; set; } 
+
         public bool Completed { get; set; }
+
+
     }
 
     public class Category
     {
         [Key]
         public int CategoryId { get; set; }
-        
+
         [Required]
-        [StringLength(50)] 
-        public string CategoryName { get; set; }
-    }
-    
-    public enum QuadrantType
-    {
-        I = 1,
-        II = 2,
-        III = 3,
-        IV = 4
+        [StringLength(50)]
+        public string CategoryName { get; set; } = string.Empty; 
     }
 }
