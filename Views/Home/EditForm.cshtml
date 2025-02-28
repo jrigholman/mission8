@@ -1,33 +1,24 @@
-﻿@{
-    ViewData["Title"] = "Add Task";
-}
-@model Mission08_Group.Models.EditTask
+﻿@model mission8.Models.EditTask
 
-<h1>@ViewData["Title"]</h1>
+<h2>Edit Task</h2>
 
-<form>
-    <label asp-for="TaskName">Task</label>
-    <input asp-for="TaskName"/>
-    <br>
-    <label asp-for="DueDate">Due Date</label>
-    <input asp-for="DueDate"/>
-    <br>
-    <label asp-for="Quadrant">Quadrant</label>
-    <input asp-for="Quadrant"/>
-    <br>
-    <label asp-for="Category">Category</label>
-    <select asp-for="Category">
-        <option>Home</option>
-        <option>School</option>
-        <option>Work</option>
-        <option>Church</option>
-    </select>
-    <br>
-    <label asp-for="Completed">Completed</label>
-    <select asp-for="Completed">
-        <option>Yes</option>
-        <option>No</option>
-    </select>
-    <br/>
-    <button type="submit">Submit Task</button>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="TaskId" />
+
+    <label>Task Name</label>
+    <input asp-for="TaskName" class="form-control" />
+
+    <label>Due Date</label>
+    <input asp-for="DueDate" class="form-control" type="date" />
+
+    <label>Category</label>
+    <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"))" class="form-control"></select>
+
+    <label>Quadrant</label>
+    <select asp-for="Quadrant" asp-items="Html.GetEnumSelectList<mission8.Models.QuadrantType>()" class="form-control"></select>
+
+    <label>Completed</label>
+    <input asp-for="Completed" type="checkbox" />
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>

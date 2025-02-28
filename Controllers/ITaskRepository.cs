@@ -4,9 +4,9 @@ namespace mission8.Models
 {
     public interface ITaskRepository
     {
-        IQueryable<TaskModel> Tasks { get; }
-        void AddTask(TaskModel task);
-        void UpdateTask(TaskModel task);
+        IQueryable<TaskAppModel> Tasks { get; }
+        void AddTask(TaskAppModel task);
+        void UpdateTask(TaskAppModel task);
         void DeleteTask(int id);
     }
 }

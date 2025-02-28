@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using mission8.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace mission8.Controllers
@@ -15,7 +16,9 @@ namespace mission8.Controllers
 
         public IActionResult Index()
         {
-            var tasks = _repo.Tasks.Where(t => !t.Completed).ToList();
+            var tasks = _repo.Tasks.Include(t => t.Category)
+                                   .Where(t => !t.Completed)
+                                   .ToList();
             return View(tasks);
         }
 
@@ -26,7 +29,7 @@ namespace mission8.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddTask(TaskModel task)
+        public IActionResult AddTask(TaskAppModel task)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +47,7 @@ namespace mission8.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(TaskModel task)
+        public IActionResult Edit(TaskAppModel task)
         {
             if (ModelState.IsValid)
             {

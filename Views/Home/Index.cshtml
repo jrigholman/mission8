@@ -1,8 +1,97 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<mission8.Models.TaskAppModel>
+
+@{
+    ViewData["Title"] = "Task Quadrants";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="text-center">Task Quadrants</h2>
+
+<div class="container">
+    <div class="row">
+        <!-- Quadrant 1 -->
+        <div class="col-md-6">
+            <h3 class="text-danger">Urgent & Important</h3>
+            <a class="btn btn-primary btn-sm mb-2" asp-controller="Task" asp-action="Create">+ Add Task</a>
+            <div class="list-group">
+                @foreach (var task in Model.Where(t => (int)t.Quadrant == 1 && !t.Completed))
+                {
+                    <div class="list-group-item">
+                        <h5>@task.TaskName</h5>
+                        <p>Due: @(task.DueDate?.ToShortDateString() ?? "No due date")</p>
+                        <p>Category: @task.Category?.CategoryName</p>
+                        <button class="btn btn-success btn-sm" onclick="markCompleted(@task.TaskId)">Complete</button>
+                        <a class="btn btn-info btn-sm" asp-controller="Task" asp-action="Edit" asp-route-id="@task.TaskId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Quadrant 2 -->
+        <div class="col-md-6">
+            <h3 class="text-primary">Not Urgent but Important</h3>
+            <a class="btn btn-primary btn-sm mb-2" asp-controller="Task" asp-action="Create">+ Add Task</a>
+            <div class="list-group">
+                @foreach (var task in Model.Where(t => (int)t.Quadrant == 2 && !t.Completed))
+                {
+                    <div class="list-group-item">
+                        <h5>@task.TaskName</h5>
+                        <p>Due: @(task.DueDate?.ToShortDateString() ?? "No due date")</p>
+                        <p>Category: @task.Category?.CategoryName</p>
+                        <button class="btn btn-success btn-sm" onclick="markCompleted(@task.TaskId)">Complete</button>
+                        <a class="btn btn-info btn-sm" asp-controller="Task" asp-action="Edit" asp-route-id="@task.TaskId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Quadrant 3 -->
+        <div class="col-md-6">
+            <h3 class="text-success">Urgent but Not Important</h3>
+            <a class="btn btn-primary btn-sm mb-2" asp-controller="Task" asp-action="Create">+ Add Task</a>
+            <div class="list-group">
+                @foreach (var task in Model.Where(t => (int)t.Quadrant == 3 && !t.Completed))
+                {
+                    <div class="list-group-item">
+                        <h5>@task.TaskName</h5>
+                        <p>Due: @(task.DueDate?.ToShortDateString() ?? "No due date")</p>
+                        <p>Category: @task.Category?.CategoryName</p>
+                        <button class="btn btn-success btn-sm" onclick="markCompleted(@task.TaskId)">Complete</button>
+                        <a class="btn btn-info btn-sm" asp-controller="Task" asp-action="Edit" asp-route-id="@task.TaskId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Quadrant 4 -->
+        <div class="col-md-6">
+            <h3 class="text-secondary">Not Urgent & Not Important</h3>
+            <a class="btn btn-primary btn-sm mb-2" asp-controller="Task" asp-action="Create">+ Add Task</a>
+            <div class="list-group">
+                @foreach (var task in Model.Where(t => (int)t.Quadrant == 4 && !t.Completed))
+                {
+                    <div class="list-group-item">
+                        <h5>@task.TaskName</h5>
+                        <p>Due: @(task.DueDate?.ToShortDateString() ?? "No due date")</p>
+                        <p>Category: @task.Category?.CategoryName</p>
+                        <button class="btn btn-success btn-sm" onclick="markCompleted(@task.TaskId)">Complete</button>
+                        <a class="btn btn-info btn-sm" asp-controller="Task" asp-action="Edit" asp-route-id="@task.TaskId">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Task" asp-action="Delete" asp-route-id="@task.TaskId">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function markCompleted(taskId) {
+        fetch('/Task/MarkCompleted/' + taskId, { method: 'POST' })
+            .then(() => location.reload())
+            .catch(err => console.log(err));
+    }
+</script>
